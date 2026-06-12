@@ -60,7 +60,8 @@ def precheck(unit: SupervisedUnit, cfg, kill_times: list[float], now: float) -> 
         return KillDecision(False, False, f"kill cap reached ({used}/{cfg.max_kills_per_window} in window)")
 
     if unit.kind in ("process", "remote"):
-        if unit.pid is None or unit.pgid is None:
+        needs_pgid = hasattr(os, "killpg")   # POSIX reaps the group; Windows reaps the pid
+        if unit.pid is None or (needs_pgid and unit.pgid is None):
             return KillDecision(False, False, "no pid/pgid recorded")
 
         if cfg.require_uid_match:
@@ -125,7 +126,7 @@ def _signal_group(unit: SupervisedUnit, cfg, log_path) -> None:
         _ssh_kill(unit, cfg, log_path)
         return
     if not hasattr(os, "killpg"):
-        log_event(log_path, "reap_error", unit_id=unit.id, error="killpg unavailable on platform")
+        _windows_terminate(unit, cfg, log_path)   # Windows has no process groups
         return
     try:
         os.killpg(pgid, signal.SIGTERM)
@@ -147,6 +148,17 @@ def _signal_group(unit: SupervisedUnit, cfg, log_path) -> None:
         os.killpg(pgid, signal.SIGKILL)
     except (ProcessLookupError, OSError):
         pass
+
+
+def _windows_terminate(unit: SupervisedUnit, cfg, log_path) -> None:
+    """Windows has no process groups; os.kill(pid, SIGTERM) maps to TerminateProcess.
+    Terminates the single pid (no group reaping available on this platform)."""
+    try:
+        os.kill(unit.pid, signal.SIGTERM)
+    except ProcessLookupError:
+        return
+    except (PermissionError, OSError) as e:
+        log_event(log_path, "reap_error", unit_id=unit.id, error=f"terminate denied: {e}")
 
 
 def _ssh_kill(unit: SupervisedUnit, cfg, log_path) -> None:
