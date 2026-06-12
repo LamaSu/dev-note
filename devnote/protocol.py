@@ -9,7 +9,7 @@ can't prove is dead.
 This module defines the contract that survives both regimes. A backend implements
 eight methods; the watcher, the policy, and the report layer stay identical whether
 the backend is `LocalProcessBackend` (this repo) or a company's million-agent
-orchestrator, or PCC's gateway.
+orchestrator, or a fleet gateway.
 
 The two primitives that make it scale-safe — and that a large system plugs in at
 its PROTOCOL layer, not as a sidecar:
@@ -53,8 +53,8 @@ class HandoffBrief:
     """What a fresh agent needs to continue. Deterministic where possible.
 
     In the local backend, files/commands/errors are parsed from the transcript and
-    git diff; completed/pending are an optional LLM step. In a PCC-style backend the
-    attested step-completeness trail fills these exactly — no inference needed."""
+    git diff; completed/pending are an optional LLM step. In a backend with an attested
+    step trail, the completed/pending split is exact — no inference needed."""
     unit_id: str
     label: str
     files_touched: list[str] = field(default_factory=list)
@@ -95,7 +95,7 @@ class ReapResult:
 class SupervisionBackend(abc.ABC):
     """Implement these eight methods and the rest of dev-note works unchanged.
 
-    A scale backend (orchestrator / PCC) typically implements register/heartbeat/
+    A scale backend (a fleet orchestrator) typically implements register/heartbeat/
     fence/is_current as cheap gateway operations and makes reap a lease-reclaim
     rather than an OS kill."""
 

@@ -108,8 +108,8 @@ agents wedge.
 - **Small orchestrator:** + Arize Phoenix (liveness from OTel + a trace UI) + Composio (agents reach SaaS without OAuth churn).
 - **Enterprise:** + guild.ai (governance/audit), TrueFoundry (gateway/fencing at fleet traffic), ClickHouse (reap analytics), OpenUI Lang (live reports).
 
-See `docs/enterprise-design.md` and `docs/pcc-native-design.md` for the full layering
-and the protocol-native PCC integration.
+See `docs/enterprise-design.md` for the full layering and how each sponsor tool maps
+onto the supervision protocol.
 
 ---
 

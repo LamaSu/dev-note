@@ -72,8 +72,8 @@ no central watcher. That's the protection that scales to a billion agents.
 
 ## What's next
 
-- Native integration into a protocol substrate so large orchestrations never wedge
-  (leases + fencing enforced at the gateway, safe-state handoff for physical actuators).
+- Gateway-native enforcement: leases + fencing checked at the gateway so large
+  orchestrations never wedge, even when the orchestrator itself stalls.
 - Richer harvest (git-diff + transcript parse + optional local GLiNER PII redaction) and
   the respawn loop wired to the trace backend.
 
