@@ -1,0 +1,83 @@
+{
+  "task": "Build agent-reaper: out-of-band stuck-agent watcher/killer + harvest/respawn, free integrations, Composio auth gated",
+  "classification": "build",
+  "started_at": "2026-06-12T20:23:12Z",
+  "updated_at": "2026-06-12T20:23:12Z",
+  "status": "running",
+  "current_phase": "Phase 5: Execute (core)",
+  "progress_pct": 50,
+  "phases": [
+    {
+      "id": 0,
+      "name": "Intake",
+      "status": "completed",
+      "notes": "py3.11 node22 spark-up dashboard-up"
+    },
+    {
+      "id": 1,
+      "name": "Assessment",
+      "status": "completed",
+      "notes": "scope=agent-reaper core + free integrations; Composio gated"
+    },
+    {
+      "id": 2,
+      "name": "Wheel-Scout",
+      "status": "completed",
+      "notes": "SATISFIED by prior research -> BUILD local"
+    },
+    {
+      "id": 3,
+      "name": "Bootstrap",
+      "status": "completed"
+    },
+    {
+      "id": 5,
+      "name": "Execute",
+      "status": "running",
+      "notes": "building core in main context (OOM-safe)"
+    },
+    {
+      "id": 6,
+      "name": "Integrate",
+      "status": "pending"
+    },
+    {
+      "id": 7,
+      "name": "Smoke Test",
+      "status": "pending"
+    }
+  ],
+  "agents": [],
+  "waves": [],
+  "events": [
+    {
+      "time": "2026-06-12T20:23:12Z",
+      "type": "phase_start",
+      "message": "Build started: agent-reaper, dry-run-default, scoped kill"
+    }
+  ],
+  "errors": [],
+  "decisions": [
+    {
+      "time": "2026-06-12T20:23:12Z",
+      "decision": "Main-context build not parallel Workflow (tablet OOM avoidance)"
+    },
+    {
+      "time": "2026-06-12T20:23:12Z",
+      "decision": "dry_run hard default; will NOT arm killer on shared Spark this build"
+    },
+    {
+      "time": "2026-06-12T20:23:12Z",
+      "decision": "Composio gated to end; self-provision first, page last resort"
+    }
+  ],
+  "broadcast_cron_id": null,
+  "smoke_test": {
+    "verdict": "pending",
+    "iterations": 0,
+    "checks_passed": 0,
+    "checks_failed": 0,
+    "heal_attempts": 0,
+    "report_path": "ai/supervisor/smoke-test-report.json"
+  }
+}

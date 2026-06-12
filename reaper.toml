@@ -1,0 +1,31 @@
+# dev-note configuration. Every key is optional; values shown are the defaults.
+# Environment overrides: REAPER_<KEY_UPPERCASE>  (e.g. REAPER_DRY_RUN=0 to arm).
+
+[reaper]
+# --- timing (seconds) ---
+poll_interval_s     = 30.0
+suspect_threshold_s = 300.0    # 5 min silent  -> suspect (watch closely)
+hung_threshold_s    = 600.0    # 10 min silent -> hung    (reap)
+lease_ttl_s         = 120.0    # a heartbeat extends a unit's lease this far
+grace_period_s      = 10.0     # SIGTERM -> wait grace -> SIGKILL
+
+# --- safety rails ---
+dry_run                 = true   # log "WOULD reap"; arm with false or REAPER_DRY_RUN=0
+require_uid_match        = true   # refuse to signal a pid we do not own
+allow_without_uid_check  = false  # arm on a platform with no uid model (e.g. Windows)
+max_kills_per_window     = 5
+kill_window_s            = 3600.0
+
+# --- respawn (off by default; reaping alone is the v1 core) ---
+respawn_enabled   = false
+respawn_max       = 3
+respawn_backoff_s = 30.0
+
+# --- paths ---
+state_dir = "state"
+
+# --- optional integrations (graceful-degrade; NONE are required) ---
+redaction_enabled     = false                      # local GLiNER PII/secret scrub before logging
+redaction_model       = "fastino/gliner2-base-v1"
+phoenix_otlp_endpoint  = ""                         # e.g. http://localhost:6006/v1/traces
+notify_cmd             = ""                         # run on dead-letter; {msg} substituted

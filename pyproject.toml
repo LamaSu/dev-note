@@ -1,0 +1,25 @@
+[project]
+name = "dev-note"
+version = "0.1.0"
+description = "Out-of-band stuck-agent watcher: detects silent hangs on a wall clock, harvests partial work, kills scoped (registry + UID checked), respawns with a fenced handoff brief."
+requires-python = ">=3.10"
+dependencies = []
+
+# Optional integrations are graceful-degrade. None are required for the core watch/kill loop.
+[project.optional-dependencies]
+redaction = ["gliner2"]          # local PII/secret span tagging before excerpts leave the box
+trace = ["arize-phoenix", "opentelemetry-sdk", "opentelemetry-exporter-otlp"]  # nested-span trace UI (local Phoenix, no Spark/GPU)
+dev = ["pytest>=7"]
+
+[project.scripts]
+devnote = "devnote.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["devnote"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
